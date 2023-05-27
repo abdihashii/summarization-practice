@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.get('/summarize', async (req, res) => {
   try {
-    const url = req.body.url;
+    const url = req.query.url;
     // GPT-3.5 Turbo model
     const llm3 = new OpenAIChat({
       modelName: 'gpt-3.5-turbo',
