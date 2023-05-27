@@ -70,7 +70,7 @@ app.post('/summarize', async (req, res) => {
   }
 });
 
-app.post('/summarize2', async (req, res) => {
+app.get('/summarize2', async (req, res) => {
   try {
     const url = req.body.url;
     // GPT-3.5 Turbo model
