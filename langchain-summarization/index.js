@@ -77,7 +77,7 @@ app.post('/summarize2', async (req, res) => {
     const llm3 = new OpenAIChat({
       modelName: 'gpt-3.5-turbo',
       maxTokens: 1000,
-      streaming: true,
+      // streaming: true,
     });
     // GPT-4 model
     const llm4 = new OpenAIChat({
@@ -94,7 +94,7 @@ app.post('/summarize2', async (req, res) => {
     const textSplitter = new RecursiveCharacterTextSplitter({
       separators: ['\n', '\n\n', '\t'],
       chunkSize: 10000,
-      chunkOverlap: 3000,
+      chunkOverlap: 500,
     });
     const documents = await textSplitter.splitDocuments(websiteContent);
 
@@ -201,7 +201,7 @@ app.post('/summarize2', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
