@@ -76,14 +76,14 @@ app.post('/summarize2', async (req, res) => {
     // GPT-3.5 Turbo model
     const llm3 = new OpenAIChat({
       modelName: 'gpt-3.5-turbo',
-      maxTokens: 4097,
+      maxTokens: 1000,
       openAIApiKey: process.env.OPENAI_API_KEY,
       // streaming: true,
     });
     // GPT-4 model
     const llm4 = new OpenAIChat({
       modelName: 'gpt-4',
-      maxTokens: 4097,
+      maxTokens: 3000,
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
 
@@ -156,7 +156,7 @@ app.post('/summarize2', async (req, res) => {
 
       console.log(
         `Summary #${i + 1}: (chunk #${
-          selectedIndices[i]
+          selectedIndices[i] + 1
         } - Preview: ${chunkSummary.text.slice(0, 250)}) \n\n`,
       );
     }
