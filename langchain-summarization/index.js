@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { OpenAI, OpenAIChat } from 'langchain/llms/openai';
+import { OpenAIChat } from 'langchain/llms/openai';
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { loadSummarizationChain } from 'langchain/chains';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
@@ -18,59 +18,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/summarize', async (req, res) => {
-  try {
-    const url = req.body.url;
-    const modelName = 'gpt-3.5-turbo';
-
-    const model = new OpenAI({
-      modelName,
-      temperature: 0,
-    });
-
-    // Load the website content
-    const loader = new CheerioWebBaseLoader(url);
-    const websiteContent = await loader.load();
-
-    // Split the website content into documents
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 10000,
-      chunkOverlap: 100,
-    });
-    const documents = await textSplitter.splitDocuments(websiteContent);
-
-    for (const doc of documents) {
-      const numTokens = await model.getNumTokens(doc.pageContent);
-      console.log(`Number of tokens: ${numTokens}`);
-    }
-
-    const mapPrompt = `
-    Write a conside summary of the following text delimited by triple =.
-    Return your response in a well-formatted, multi-paragraph string.
-    ==={text}===
-    SUMMARY:
-    `;
-    const combinePromptTemplate = new PromptTemplate({
-      inputVariables: ['text'],
-      template: mapPrompt,
-    });
-
-    const chain = await loadSummarizationChain(model, {
-      type: 'map_reduce',
-      combineMapPromptTemplate: combinePromptTemplate,
-    });
-    const summary = await chain.call({
-      input_documents: documents,
-    });
-
-    res.status(200).send(summary);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send(e);
-  }
-});
-
-app.get('/summarize2', async (req, res) => {
+app.get('/summarize', async (req, res) => {
   try {
     const url = req.body.url;
     // GPT-3.5 Turbo model
@@ -197,7 +145,7 @@ app.get('/summarize2', async (req, res) => {
       finalSummary: finalSummary.text,
     });
   } catch (e) {
-    console.error(e.stack);
+    console.error(e);
     res.status(500).send(e);
   }
 });
