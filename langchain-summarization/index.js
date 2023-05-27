@@ -76,14 +76,14 @@ app.post('/summarize2', async (req, res) => {
     // GPT-3.5 Turbo model
     const llm3 = new OpenAIChat({
       modelName: 'gpt-3.5-turbo',
-      maxTokens: 1000,
+      maxTokens: 4097,
       openAIApiKey: process.env.OPENAI_API_KEY,
       // streaming: true,
     });
     // GPT-4 model
     const llm4 = new OpenAIChat({
       modelName: 'gpt-4',
-      maxTokens: 3000,
+      maxTokens: 4097,
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
 
